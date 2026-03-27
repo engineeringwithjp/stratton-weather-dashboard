@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Big White Snow Report</title>
-    <meta name="description" content="Get the ultimate Big White snow report with live conditions, webcams, hour-by-hour forecast, and insider mountain insights tailored for skiers and riders.">
-    <meta name="keywords" content="Big White, snow report, ski conditions, powder forecast, Big White webcams, Big White weather, ski resort dashboard">
+    <title>Stratton Mountain Snow Report</title>
+    <meta name="description" content="Get the ultimate Stratton Mountain snow report with live conditions, webcams, hour-by-hour forecast, and insider mountain insights tailored for skiers and riders in Vermont.">
+    <meta name="keywords" content="Stratton Mountain, snow report, ski conditions, powder forecast, Stratton webcams, Stratton weather, Vermont ski resort, ski dashboard">
     <meta name="author" content="emptycan.com">
-    <link rel="canonical" href="https://bw-report.netlify.app/">
-    <meta property="og:title" content="Big White Snow Report — Live Conditions & Forecast">
-    <meta property="og:description" content="Track current temps, fresh snow, wind, webcams, and the next 7 days at Big White with this skier-first dashboard.">
+    <link rel="canonical" href="https://stratton-report.netlify.app/">
+    <meta property="og:title" content="Stratton Mountain Snow Report — Live Conditions & Forecast">
+    <meta property="og:description" content="Track current temps, fresh snow, wind, webcams, and the next 7 days at Stratton Mountain with this skier-first dashboard.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bw-report.netlify.app/">
-    <meta property="og:image" content="https://bw-report.netlify.app/assets/social/og-image.png">
-    <meta property="og:locale" content="en_CA">
+    <meta property="og:url" content="https://stratton-report.netlify.app/">
+    <meta property="og:image" content="https://stratton-report.netlify.app/assets/social/og-image.png">
+    <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Big White Snow Report — Live Conditions & Forecast">
-    <meta name="twitter:description" content="Ski-ready dashboard with Big White snowfall history, next storm preview, and on-mountain insights.">
-    <meta name="twitter:image" content="https://bw-report.netlify.app/assets/social/twitter-card.png">
+    <meta name="twitter:title" content="Stratton Mountain Snow Report — Live Conditions & Forecast">
+    <meta name="twitter:description" content="Ski-ready dashboard with Stratton Mountain snowfall history, next storm preview, and on-mountain insights.">
+    <meta name="twitter:image" content="https://stratton-report.netlify.app/assets/social/twitter-card.png">
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Inter font -->
@@ -27,39 +27,39 @@
     <!-- Load Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <!--
-        emptycan.com
+        emptycan.com — adapted for Stratton Mountain Resort, Vermont
     -->
     <style>
         /* Use Inter font */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Use a light gray background */
+            background-color: #f0f7f2; /* Vermont pine-tinted background */
         }
         /* Style for the "mega" metrics */
         .stat-metric {
-            font-weight: 900; /* Black */
-            font-size: 3rem; /* 48px */
+            font-weight: 900;
+            font-size: 3rem;
             line-height: 1;
-            color: #1e3a8a; /* Deep blue */
+            color: #15803d; /* Vermont forest green */
         }
         .stat-label {
-            font-weight: 600; /* Semibold */
-            font-size: 1rem; /* 16px */
-            color: #4b5563; /* Gray-600 */
+            font-weight: 600;
+            font-size: 1rem;
+            color: #4b5563;
         }
         /* Custom scrollbar for hourly forecast */
         .hourly-forecast {
             overflow-x: auto;
             white-space: nowrap;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         .hourly-forecast::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
         }
         @media (max-width: 640px) {
             body {
-                font-size: 0.85rem; /* Reduce base type by ~15% on phones */
+                font-size: 0.85rem;
             }
         }
         .chart-scroll {
@@ -74,41 +74,60 @@
                 min-width: 100%;
             }
         }
+
+        /* ── Vermont Green Mountain palette overrides ── */
+        /* Snow/highlight stat card backgrounds */
+        .bg-blue-50 { background-color: #f0fdf4 !important; }
+        /* Snow values, links, accent text */
+        .text-blue-600 { color: #15803d !important; }
+        .text-blue-700 { color: #166534 !important; }
+        /* Primary action button → amber gold */
+        .bg-blue-600 { background-color: #d97706 !important; }
+        .hover\:bg-blue-700:hover { background-color: #b45309 !important; }
+        /* Border accents */
+        .border-blue-200 { border-color: #a7f3d0 !important; }
+        /* Link hover states */
+        .hover\:bg-blue-50:hover { background-color: #f0fdf4 !important; }
+        /* "Plan in ChatGPT" header link text */
+        header .text-blue-600 { color: #d97706 !important; }
+        /* Copy SnowLab JSON button */
+        #copy-chat-json { background-color: #d97706 !important; }
+        #copy-chat-json:hover { background-color: #b45309 !important; }
+        /* Open ChatGPT border link */
+        #chatgpt-planner a.border { border-color: #a7f3d0 !important; color: #15803d !important; }
+        #chatgpt-planner a.border:hover { background-color: #f0fdf4 !important; }
+        /* View All Webcams button */
+        #webcam-btn { background-color: #d97706 !important; }
+        #webcam-btn:hover { background-color: #b45309 !important; }
     </style>
-    <script type="text/javascript">
-	(function (c, l, a, r, i, t, y) {
-		c[a] = c[a] || function () {(c[a].q = c[a].q || []).push(arguments)};
-		t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-		y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-	})(window, document, "clarity", "script", "qq7ezd2qwp");
-    </script>
+    <!-- Optional analytics — add your own snippet here -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SportsActivityLocation",
-      "name": "Big White Snow Report",
-      "description": "Real-time snow report, forecast, and mountain intelligence for Big White skiers and snowboarders.",
+      "name": "Stratton Mountain Snow Report",
+      "description": "Real-time snow report, forecast, and mountain intelligence for Stratton Mountain skiers and snowboarders.",
       "sport": "Skiing",
-      "url": "https://bw-report.netlify.app/",
-      "image": "https://bw-report.netlify.app/assets/social/og-image.png",
+      "url": "https://stratton-report.netlify.app/",
+      "image": "https://stratton-report.netlify.app/assets/social/og-image.png",
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": 49.73,
-        "longitude": -118.94
+        "latitude": 43.1117,
+        "longitude": -72.9094
       },
       "areaServed": {
         "@type": "AdministrativeArea",
-        "name": "Big White Ski Resort, British Columbia"
+        "name": "Stratton Mountain Resort, Vermont"
       },
       "publisher": {
         "@type": "Organization",
         "name": "Snowlab",
-        "url": "https://bw-report.netlify.app/"
+        "url": "https://stratton-report.netlify.app/"
       },
       "sameAs": [
-        "https://www.bigwhite.com/",
-        "https://www.instagram.com/bigwhiteskiarea/",
-        "https://www.facebook.com/bigwhiteskiarea/"
+        "https://www.stratton.com/",
+        "https://www.instagram.com/strattonmountain/",
+        "https://www.facebook.com/StrattonMountainResort/"
       ]
     }
     </script>
@@ -119,8 +138,8 @@
         <!-- Header -->
         <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-                <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Big White Snow Report</h1>
-                <p class="text-lg text-gray-600">Live mountain conditions dashboard.</p>
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Stratton Mountain Snow Report</h1>
+                <p class="text-lg text-gray-600">Live mountain conditions dashboard · Stratton, Vermont.</p>
             </div>
             <div class="flex items-center gap-3">
                 <a href="#chatgpt-planner"
@@ -141,7 +160,7 @@
                     <p class="text-sm text-gray-500 mb-4" id="last-updated">Updating...</p>
                     <p class="text-base text-gray-700 mb-6 flex items-center gap-2">
                         <span id="current-weather-icon" class="text-2xl">🌨️</span>
-                        <span id="current-weather-summary">Pulling the latest Big White vibes...</span>
+                        <span id="current-weather-summary">Pulling the latest Stratton Mountain vibes...</span>
                     </p>
 
                     <!-- Main Stats Grid -->
@@ -157,28 +176,28 @@
                             <div class="stat-metric" id="feels-like">--°</div>
                             <div class="stat-label">Feels Like</div>
                         </div>
-                        
+
                         <!-- 24h Snow -->
                         <div class="bg-blue-50 p-4 rounded-lg">
-                            <div class="stat-metric" id="24h-snow">--<span class="text-2xl ml-1">cm</span></div>
+                            <div class="stat-metric" id="24h-snow">--<span class="text-2xl ml-1">in</span></div>
                             <div class="stat-label">24h Snowfall</div>
                         </div>
 
                         <!-- Snow Base -->
                         <div class="bg-blue-50 p-4 rounded-lg">
-                            <div class="stat-metric" id="snow-base">--<span class="text-2xl ml-1">cm</span></div>
+                            <div class="stat-metric" id="snow-base">--<span class="text-2xl ml-1">in</span></div>
                             <div class="stat-label">Snow Base</div>
                         </div>
 
                         <!-- Wind Speed -->
                         <div class="bg-gray-50 p-4 rounded-lg">
-                            <div class="stat-metric" id="wind-speed">--<span class="text-2xl ml-1">km/h</span></div>
+                            <div class="stat-metric" id="wind-speed">--<span class="text-2xl ml-1">mph</span></div>
                             <div class="stat-label">Ridge Wind</div>
                         </div>
 
                         <!-- Wind Gusts -->
                         <div class="bg-gray-50 p-4 rounded-lg">
-                            <div class="stat-metric" id="wind-gust">--<span class="text-2xl ml-1">km/h</span></div>
+                            <div class="stat-metric" id="wind-gust">--<span class="text-2xl ml-1">mph</span></div>
                             <div class="stat-label">Peak Gust</div>
                         </div>
 
@@ -194,13 +213,12 @@
                 <div class="bg-white p-6 rounded-lg shadow-md mt-6">
                     <h2 class="text-2xl font-bold text-gray-800 mb-4">24-Hour Forecast</h2>
                     <div class="hourly-forecast pb-2">
-                        <!-- Hourly cards will be injected here by JS -->
                         <div id="hourly-container" class="flex space-x-4">
                             <!-- Loading skeleton -->
                             <div class="flex-none w-28 text-center bg-gray-50 p-3 rounded-lg animate-pulse">
                                 <div class="font-semibold text-sm">--:--</div>
                                 <div class="font-bold text-xl my-1">--°</div>
-                                <div class="text-xs text-blue-600">-- cm</div>
+                                <div class="text-xs text-blue-600">-- in</div>
                             </div>
                         </div>
                     </div>
@@ -227,7 +245,7 @@
                         </div>
                         <div class="bg-gray-50 rounded-lg p-4">
                             <p class="text-xs uppercase tracking-wide text-gray-500 mb-1">Liquid Precip</p>
-                            <p class="text-xl font-bold text-gray-800" id="liquid-precip-now">-- mm</p>
+                            <p class="text-xl font-bold text-gray-800" id="liquid-precip-now">-- in</p>
                             <p class="text-gray-500 mt-1">Watch for mixed precip or crust builders.</p>
                         </div>
                     </div>
@@ -272,7 +290,7 @@
                     <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-0 mb-4">
                         <div>
                             <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Freezing Level Tracker</h2>
-                            <p class="text-sm text-gray-500 mt-1">Hourly freezing level compared to village, mid-mountain, and summit elevations.</p>
+                            <p class="text-sm text-gray-500 mt-1">Hourly freezing level compared to base, mid-mountain, and summit elevations.</p>
                         </div>
                         <span class="text-sm text-gray-500 sm:text-right" id="freezing-level-window">Updating...</span>
                     </div>
@@ -363,7 +381,7 @@
                                 Copy SnowLab JSON
                             </button>
                             <a href="https://chat.openai.com/" target="_blank" rel="noopener noreferrer"
-                               class="px-4 py-2 text-sm font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50 rounded-lg transition">
+                               class="border px-4 py-2 text-sm font-semibold rounded-lg transition">
                                 Open ChatGPT
                             </a>
                         </div>
@@ -371,7 +389,7 @@
                     <pre id="chat-json-preview" class="bg-gray-900 text-gray-100 text-xs sm:text-sm leading-relaxed rounded-lg p-4 overflow-x-auto max-h-64">
 Awaiting live data...
                     </pre>
-                    <p id="chat-json-status" class="text-xs text-gray-500 mt-2">Tip: paste the JSON into ChatGPT with a prompt like “Use this SnowLab data to plan tomorrow’s ski day.”</p>
+                    <p id="chat-json-status" class="text-xs text-gray-500 mt-2">Tip: paste the JSON into ChatGPT with a prompt like "Use this SnowLab data to plan tomorrow's ski day at Stratton."</p>
                 </div>
             </section>
 
@@ -380,21 +398,21 @@ Awaiting live data...
                 <!-- Webcams -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold text-gray-800 mb-4">Mountain Cams</h2>
-                    <p class="text-gray-600 mb-4">Links to the official Big White live feeds. These feeds aren't embeddable, so click the link to see them all.</p>
-                    <a href="https://www.bigwhite.com/mountain-conditions/webcams" 
-                       target="_blank" 
+                    <p class="text-gray-600 mb-4">Links to the official Stratton live feeds. Click the button to view all cams.</p>
+                    <a id="webcam-btn"
+                       href="https://www.stratton.com/the-mountain/mountain-report/webcams"
+                       target="_blank"
                        rel="noopener noreferrer"
                        class="block w-full text-center bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200">
                        View All Live Cams
                     </a>
                     <ul class="list-disc list-inside mt-4 text-gray-600 space-y-1">
-                        <li>Village Centre</li>
-                        <li>The Cliff</li>
-                        <li>Gem Lake</li>
-                        <li>Happy Valley</li>
-                        <li>Snow Ghost</li>
+                        <li>Sun Bowl Base</li>
+                        <li>North American Base</li>
+                        <li>Summit</li>
+                        <li>Village</li>
+                        <li>Kidderbrook</li>
                     </ul>
-                    
                 </div>
 
                 <!-- Sun & Light -->
@@ -415,24 +433,23 @@ Awaiting live data...
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 7-Day Forecast -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold text-gray-800 mb-4">7-Day Forecast</h2>
                     <div id="7-day-container" class="space-y-3">
-                        <!-- Daily forecast items will be injected here -->
                         <!-- Loading skeleton -->
                         <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg animate-pulse">
                             <div class="font-semibold w-1/3">------</div>
-                            <div class="font-medium text-blue-600 w-1/3 text-center">-- cm</div>
+                            <div class="font-medium text-blue-600 w-1/3 text-center">-- in</div>
                             <div class="font-medium text-right w-1/3">--°/--°</div>
                         </div>
                     </div>
                 </div>
             </aside>
         </main>
-       
-        <p class="text-gray-600 mt-8"><small>Code: <a href="https://github.com/jessekorzan/snowlab" target="_blank">https://github.com/jessekorzan/snowlab</a> &mdash; Data: <a href="https://open-meteo.com/" target="_blank">https://open-meteo.com/</a> </small></p>
+
+        <p class="text-gray-600 mt-8"><small>Code: <a href="https://github.com/jessekorzan/snowlab" target="_blank">https://github.com/jessekorzan/snowlab</a> &mdash; Data: <a href="https://open-meteo.com/" target="_blank">https://open-meteo.com/</a></small></p>
     </div>
 
     <script>
@@ -468,24 +485,30 @@ Awaiting live data...
         };
 
         const APP_CONFIG = {
-            resortName: 'Big White',
-            latitude: 49.73,
-            longitude: -118.94,
-            timezone: 'America/Vancouver',
-            shareUrl: 'https://bw-report.netlify.app/'
+            resortName: 'Stratton Mountain',
+            latitude: 43.1117,
+            longitude: -72.9094,
+            timezone: 'America/New_York',
+            shareUrl: 'https://stratton-report.netlify.app/'
         };
 
         const FALLBACK = '--';
-        const CACHE_KEY = 'bigwhite-weather-cache-v2';
+        const CACHE_KEY = 'stratton-weather-cache-v2';
         const CACHE_TTL_MS = 10 * 60 * 1000;
         const HISTORICAL_LOOKBACK_DAYS = 7;
+
+        // Stratton Mountain Resort elevations (in meters)
+        // Base: 1,872 ft / 570 m | Mid: ~2,900 ft / 884 m | Summit: 3,940 ft / 1,201 m
         const RESORT_ELEVATIONS = [
-            { label: 'Village', value: 1710 },
-            { label: 'Mid-Mountain', value: 1950 },
-            { label: 'Summit', value: 2319 }
+            { label: 'Base', value: 570 },
+            { label: 'Mid-Mountain', value: 884 },
+            { label: 'Summit', value: 1201 }
         ];
-        const WIND_THRESHOLD_HOLD = 70; // km/h
-        const FORECAST_URL = `https://api.open-meteo.com/v1/forecast?latitude=${APP_CONFIG.latitude}&longitude=${APP_CONFIG.longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,snowfall,snow_depth&hourly=temperature_2m,apparent_temperature,snowfall,snow_depth,precipitation,precipitation_probability,weather_code,visibility,cloud_cover,wind_speed_10m,wind_gusts_10m,freezing_level_height&daily=weather_code,temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,sunrise,sunset,daylight_duration&timezone=${encodeURIComponent(APP_CONFIG.timezone)}&forecast_days=7&windspeed_unit=kmh&precipitation_unit=mm`;
+
+        const WIND_THRESHOLD_HOLD = 45; // mph — typical Stratton lift-hold threshold
+
+        const FORECAST_URL = `https://api.open-meteo.com/v1/forecast?latitude=${APP_CONFIG.latitude}&longitude=${APP_CONFIG.longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,snowfall,snow_depth&hourly=temperature_2m,apparent_temperature,snowfall,snow_depth,precipitation,precipitation_probability,weather_code,visibility,cloud_cover,wind_speed_10m,wind_gusts_10m,freezing_level_height&daily=weather_code,temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,sunrise,sunset,daylight_duration&timezone=${encodeURIComponent(APP_CONFIG.timezone)}&forecast_days=7&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch`;
+
         let snowTrendChart = null;
         let temperatureProfileChart = null;
         let freezingLevelChart = null;
@@ -529,7 +552,7 @@ Awaiting live data...
                 ctx.font = opts.font || '12px "Inter", sans-serif';
                 ctx.textAlign = 'right';
                 ctx.textBaseline = 'middle';
-                opts.elevations.forEach((band, index) => {
+                opts.elevations.forEach((band) => {
                     const y = yScale.getPixelForValue(band.value);
                     if (y >= chartArea.top && y <= chartArea.bottom) {
                         ctx.fillText(`${band.label} ${Math.round(band.value)} m`, chartArea.right - 6, y);
@@ -638,7 +661,7 @@ Awaiting live data...
         function buildHistoricalUrl() {
             const startDate = getDateString(-HISTORICAL_LOOKBACK_DAYS);
             const endDate = getDateString(-1);
-            return `https://archive-api.open-meteo.com/v1/archive?latitude=${APP_CONFIG.latitude}&longitude=${APP_CONFIG.longitude}&start_date=${startDate}&end_date=${endDate}&daily=temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max&timezone=${encodeURIComponent(APP_CONFIG.timezone)}&windspeed_unit=kmh&precipitation_unit=mm`;
+            return `https://archive-api.open-meteo.com/v1/archive?latitude=${APP_CONFIG.latitude}&longitude=${APP_CONFIG.longitude}&start_date=${startDate}&end_date=${endDate}&daily=temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max&timezone=${encodeURIComponent(APP_CONFIG.timezone)}&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch`;
         }
 
         function getDateString(offsetDays = 0) {
@@ -899,7 +922,7 @@ Awaiting live data...
                     const date = new Date(`${time}T00:00:00`);
                     const label = formatDateLabel(date);
                     const valueRaw = Number(historical.daily.snowfall_sum[idx]);
-                    const value = Number.isFinite(valueRaw) ? Number(valueRaw.toFixed(1)) : null;
+                    const value = Number.isFinite(valueRaw) ? Number(valueRaw.toFixed(2)) : null;
                     labels.push(label);
                     pastSeries.push(value);
                     futureSeries.push(null);
@@ -916,7 +939,7 @@ Awaiting live data...
                     const date = new Date(`${time}T00:00:00`);
                     const label = formatDateLabel(date);
                     const valueRaw = Number(forecast.daily.snowfall_sum[idx]);
-                    const value = Number.isFinite(valueRaw) ? Number(valueRaw.toFixed(1)) : null;
+                    const value = Number.isFinite(valueRaw) ? Number(valueRaw.toFixed(2)) : null;
                     if (labelIndex.has(label)) {
                         const existingIndex = labelIndex.get(label);
                         futureSeries[existingIndex] = value;
@@ -971,8 +994,8 @@ Awaiting live data...
                     {
                         label: 'Observed',
                         data: series.pastSeries,
-                        borderColor: '#1e3a8a',
-                        backgroundColor: 'rgba(30, 58, 138, 0.15)',
+                        borderColor: '#166534',           // deep forest green
+                        backgroundColor: 'rgba(21, 128, 61, 0.15)',
                         borderWidth: 2,
                         fill: 'origin',
                         spanGaps: false,
@@ -983,8 +1006,8 @@ Awaiting live data...
                     {
                         label: 'Forecast',
                         data: series.futureSeries,
-                        borderColor: '#60a5fa',
-                        backgroundColor: 'rgba(96, 165, 250, 0.15)',
+                        borderColor: '#d97706',           // amber gold
+                        backgroundColor: 'rgba(217, 119, 6, 0.12)',
                         borderWidth: 2,
                         borderDash: [6, 4],
                         fill: false,
@@ -1017,29 +1040,25 @@ Awaiting live data...
                                 if (value === null || Number.isNaN(value)) {
                                     return `${context.dataset.label}: --`;
                                 }
-                                return `${context.dataset.label}: ${value.toFixed(1)} cm`;
+                                return `${context.dataset.label}: ${value.toFixed(2)} in`;
                             }
                         }
                     }
                 },
                 scales: {
                     x: {
-                        title: {
-                            display: false
-                        },
-                        grid: {
-                            display: false
-                        }
+                        title: { display: false },
+                        grid: { display: false }
                     },
                     y: {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Snowfall (cm)'
+                            text: 'Snowfall (in)'
                         },
                         ticks: {
                             callback(value) {
-                                return `${value} cm`;
+                                return `${value} in`;
                             }
                         },
                         grid: {
@@ -1060,12 +1079,12 @@ Awaiting live data...
                     data: chartData,
                     options: chartOptions
                 });
-        }
+            }
 
-        const observedText = observedRange ? `Observed ${observedRange}` : 'Observed data unavailable';
-        const forecastText = forecastRange ? `Forecast ${forecastRange}` : 'Forecast data unavailable';
-        statusEl.textContent = `${observedText} · ${forecastText}`;
-    }
+            const observedText = observedRange ? `Observed ${observedRange}` : 'Observed data unavailable';
+            const forecastText = forecastRange ? `Forecast ${forecastRange}` : 'Forecast data unavailable';
+            statusEl.textContent = `${observedText} · ${forecastText}`;
+        }
 
         function formatWindowLabel(start, end) {
             if (!start || !end) {
@@ -1099,13 +1118,14 @@ Awaiting live data...
 
             const temps = windowData.datasets['temperature_2m'];
             const feels = windowData.datasets['apparent_temperature'];
-            const negativeArea = temps.map(val => (Number.isFinite(val) && val < 0 ? val : null));
+            // Sub-freezing in °F: below 32°F
+            const negativeArea = temps.map(val => (Number.isFinite(val) && val < 32 ? val : null));
 
             const allValues = temps.concat(feels).filter(val => Number.isFinite(val));
-            const minVal = allValues.length ? Math.min(...allValues) : -10;
-            const maxVal = allValues.length ? Math.max(...allValues) : 5;
-            const suggestedMin = Math.min(-5, Math.floor((minVal - 2) / 2) * 2);
-            const suggestedMax = Math.max(5, Math.ceil((maxVal + 2) / 2) * 2);
+            const minVal = allValues.length ? Math.min(...allValues) : 10;
+            const maxVal = allValues.length ? Math.max(...allValues) : 40;
+            const suggestedMin = Math.min(23, Math.floor((minVal - 4) / 2) * 2);
+            const suggestedMax = Math.max(40, Math.ceil((maxVal + 4) / 2) * 2);
 
             const chartData = {
                 labels: windowData.labels,
@@ -1116,12 +1136,12 @@ Awaiting live data...
                         type: 'line',
                         borderColor: 'transparent',
                         backgroundColor: 'rgba(59, 130, 246, 0.18)',
-                        fill: { target: { value: 0 } },
+                        fill: { target: { value: 32 } },
                         pointRadius: 0,
                         spanGaps: false
                     },
                     {
-                        label: 'Actual Temp (°C)',
+                        label: 'Actual Temp (°F)',
                         data: temps,
                         borderColor: '#2563eb',
                         borderWidth: 2,
@@ -1131,7 +1151,7 @@ Awaiting live data...
                         tension: 0.3
                     },
                     {
-                        label: 'Feels Like (°C)',
+                        label: 'Feels Like (°F)',
                         data: feels,
                         borderColor: '#38bdf8',
                         borderWidth: 2,
@@ -1147,15 +1167,12 @@ Awaiting live data...
             const chartOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
-                interaction: {
-                    mode: 'index',
-                    intersect: false
-                },
+                interaction: { mode: 'index', intersect: false },
                 plugins: {
                     legend: {
                         labels: {
                             usePointStyle: true,
-                            filter(item, data) {
+                            filter(item) {
                                 return item.text !== 'Sub-freezing window';
                             }
                         }
@@ -1167,30 +1184,21 @@ Awaiting live data...
                                 if (value === null || Number.isNaN(value)) {
                                     return `${context.dataset.label}: --`;
                                 }
-                                return `${context.dataset.label}: ${value.toFixed(1)}°C`;
+                                return `${context.dataset.label}: ${value.toFixed(1)}°F`;
                             }
                         }
                     }
                 },
                 scales: {
-                    x: {
-                        grid: { display: false }
-                    },
+                    x: { grid: { display: false } },
                     y: {
                         suggestedMin,
                         suggestedMax,
-                        title: {
-                            display: true,
-                            text: 'Temperature (°C)'
-                        },
+                        title: { display: true, text: 'Temperature (°F)' },
                         ticks: {
-                            callback(value) {
-                                return `${value}°`;
-                            }
+                            callback(value) { return `${value}°`; }
                         },
-                        grid: {
-                            color: 'rgba(148, 163, 184, 0.2)'
-                        }
+                        grid: { color: 'rgba(148, 163, 184, 0.2)' }
                     }
                 }
             };
@@ -1231,10 +1239,10 @@ Awaiting live data...
 
             const freezingLevels = windowData.datasets['freezing_level_height'].map(val => (Number.isFinite(val) ? Math.round(val) : null));
             const numericValues = freezingLevels.filter(val => Number.isFinite(val));
-            const maxVal = numericValues.length ? Math.max(...numericValues) : 2500;
-            const suggestedMax = Math.max(2400, Math.ceil((maxVal + 200) / 100) * 100);
+            const maxVal = numericValues.length ? Math.max(...numericValues) : 1400;
+            const suggestedMax = Math.max(1300, Math.ceil((maxVal + 200) / 100) * 100);
 
-            const elevationColors = ['#94a3b8', '#cbd5f5', '#e2e8f0'];
+            const elevationColors = ['#94a3b8', '#4ade80', '#166534'];
             const elevationDatasets = RESORT_ELEVATIONS.map((band, index) => ({
                 label: `${band.label} (${band.value} m)`,
                 data: new Array(windowData.labels.length).fill(band.value),
@@ -1251,7 +1259,7 @@ Awaiting live data...
                     {
                         label: 'Freezing Level (m)',
                         data: freezingLevels,
-                        borderColor: '#38bdf8',
+                        borderColor: '#d97706',  // amber for visibility
                         borderWidth: 3,
                         pointRadius: 3,
                         pointHoverRadius: 5,
@@ -1267,9 +1275,7 @@ Awaiting live data...
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 plugins: {
-                    legend: {
-                        labels: { usePointStyle: true }
-                    },
+                    legend: { labels: { usePointStyle: true } },
                     tooltip: {
                         callbacks: {
                             label(context) {
@@ -1288,24 +1294,15 @@ Awaiting live data...
                     }
                 },
                 scales: {
-                    x: {
-                        grid: { display: false }
-                    },
+                    x: { grid: { display: false } },
                     y: {
                         beginAtZero: true,
                         suggestedMax,
-                        title: {
-                            display: true,
-                            text: 'Elevation (m)'
-                        },
+                        title: { display: true, text: 'Elevation (m)' },
                         ticks: {
-                            callback(value) {
-                                return `${value} m`;
-                            }
+                            callback(value) { return `${value} m`; }
                         },
-                        grid: {
-                            color: 'rgba(148, 163, 184, 0.18)'
-                        }
+                        grid: { color: 'rgba(148, 163, 184, 0.18)' }
                     }
                 }
             };
@@ -1354,7 +1351,7 @@ Awaiting live data...
                 labels: windowData.labels,
                 datasets: [
                     {
-                        label: 'Wind Speed (km/h)',
+                        label: 'Wind Speed (mph)',
                         data: windSpeeds,
                         borderColor: '#2563eb',
                         borderWidth: 3,
@@ -1364,7 +1361,7 @@ Awaiting live data...
                         yAxisID: 'y'
                     },
                     {
-                        label: 'Wind Gust (km/h)',
+                        label: 'Wind Gust (mph)',
                         data: gustSpeeds,
                         borderColor: '#f97316',
                         borderWidth: 3,
@@ -1375,7 +1372,7 @@ Awaiting live data...
                         yAxisID: 'y1'
                     },
                     {
-                        label: `Hold Threshold (${WIND_THRESHOLD_HOLD} km/h)`,
+                        label: `Hold Threshold (${WIND_THRESHOLD_HOLD} mph)`,
                         data: new Array(windowData.labels.length).fill(WIND_THRESHOLD_HOLD),
                         borderColor: '#dc2626',
                         borderDash: [8, 6],
@@ -1391,9 +1388,7 @@ Awaiting live data...
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 plugins: {
-                    legend: {
-                        labels: { usePointStyle: true }
-                    },
+                    legend: { labels: { usePointStyle: true } },
                     tooltip: {
                         callbacks: {
                             label(context) {
@@ -1401,7 +1396,7 @@ Awaiting live data...
                                 if (value === null || Number.isNaN(value)) {
                                     return `${context.dataset.label}: --`;
                                 }
-                                return `${context.dataset.label}: ${value.toFixed(0)} km/h`;
+                                return `${context.dataset.label}: ${value.toFixed(0)} mph`;
                             }
                         }
                     },
@@ -1412,37 +1407,20 @@ Awaiting live data...
                     }
                 },
                 scales: {
-                    x: {
-                        grid: { display: false }
-                    },
+                    x: { grid: { display: false } },
                     y: {
                         beginAtZero: true,
                         suggestedMax,
-                        title: {
-                            display: true,
-                            text: 'Wind Speed (km/h)'
-                        },
-                        ticks: {
-                            callback(value) {
-                                return `${value} km/h`;
-                            }
-                        },
-                        grid: {
-                            color: 'rgba(148, 163, 184, 0.16)'
-                        }
+                        title: { display: true, text: 'Wind Speed (mph)' },
+                        ticks: { callback(value) { return `${value} mph`; } },
+                        grid: { color: 'rgba(148, 163, 184, 0.16)' }
                     },
                     y1: {
                         beginAtZero: true,
                         position: 'right',
                         suggestedMax,
-                        ticks: {
-                            callback(value) {
-                                return `${value} km/h`;
-                            }
-                        },
-                        grid: {
-                            drawOnChartArea: false
-                        }
+                        ticks: { callback(value) { return `${value} mph`; } },
+                        grid: { drawOnChartArea: false }
                     }
                 }
             };
@@ -1508,12 +1486,12 @@ Awaiting live data...
             const hourlyNext24 = hourlyWindow
                 ? hourlyWindow.timestamps.map((iso, idx) => ({
                     time_iso: iso,
-                    temperature_c: toNumber(hourlyWindow.datasets['temperature_2m'][idx]),
-                    feels_like_c: toNumber(hourlyWindow.datasets['apparent_temperature'][idx]),
-                    snowfall_cm: toNumber(hourlyWindow.datasets['snowfall'][idx]),
+                    temperature_f: toNumber(hourlyWindow.datasets['temperature_2m'][idx]),
+                    feels_like_f: toNumber(hourlyWindow.datasets['apparent_temperature'][idx]),
+                    snowfall_in: toNumber(hourlyWindow.datasets['snowfall'][idx]),
                     precipitation_probability_percent: toNumber(hourlyWindow.datasets['precipitation_probability'][idx], 0),
-                    wind_speed_kmh: toNumber(hourlyWindow.datasets['wind_speed_10m'][idx], 0),
-                    wind_gust_kmh: toNumber(hourlyWindow.datasets['wind_gusts_10m'][idx], 0),
+                    wind_speed_mph: toNumber(hourlyWindow.datasets['wind_speed_10m'][idx], 0),
+                    wind_gust_mph: toNumber(hourlyWindow.datasets['wind_gusts_10m'][idx], 0),
                     freezing_level_m: toNumber(hourlyWindow.datasets['freezing_level_height'][idx], 0)
                 }))
                 : [];
@@ -1523,20 +1501,21 @@ Awaiting live data...
                     date: dateStr,
                     weekday: new Date(dateStr).toLocaleDateString('en-US', { weekday: 'long' }),
                     weather_code: daily.weather_code ? daily.weather_code[idx] : null,
-                    snowfall_cm: toNumber(daily.snowfall_sum ? daily.snowfall_sum[idx] : null),
-                    precipitation_mm: toNumber(daily.precipitation_sum ? daily.precipitation_sum[idx] : null),
+                    snowfall_in: toNumber(daily.snowfall_sum ? daily.snowfall_sum[idx] : null),
+                    precipitation_in: toNumber(daily.precipitation_sum ? daily.precipitation_sum[idx] : null),
                     precipitation_probability_percent: toNumber(daily.precipitation_probability_max ? daily.precipitation_probability_max[idx] : null, 0),
-                    temp_max_c: toNumber(daily.temperature_2m_max ? daily.temperature_2m_max[idx] : null),
-                    temp_min_c: toNumber(daily.temperature_2m_min ? daily.temperature_2m_min[idx] : null),
-                    wind_speed_max_kmh: toNumber(daily.wind_speed_10m_max ? daily.wind_speed_10m_max[idx] : null, 0),
-                    wind_gust_max_kmh: toNumber(daily.wind_gusts_10m_max ? daily.wind_gusts_10m_max[idx] : null, 0)
+                    temp_max_f: toNumber(daily.temperature_2m_max ? daily.temperature_2m_max[idx] : null),
+                    temp_min_f: toNumber(daily.temperature_2m_min ? daily.temperature_2m_min[idx] : null),
+                    wind_speed_max_mph: toNumber(daily.wind_speed_10m_max ? daily.wind_speed_10m_max[idx] : null, 0),
+                    wind_gust_max_mph: toNumber(daily.wind_gusts_10m_max ? daily.wind_gusts_10m_max[idx] : null, 0)
                 }))
                 : [];
 
             const historicalSnow = buildDailySeries(historicalData, ['snowfall_sum', 'precipitation_sum']);
 
-            const currentSnowDepthCm = current.snow_depth !== undefined && current.snow_depth !== null
-                ? toNumber(Number(current.snow_depth) * 100, 0)
+            // snow_depth from Open-Meteo is always in meters; convert to inches
+            const currentSnowDepthIn = current.snow_depth !== undefined && current.snow_depth !== null
+                ? toNumber(Number(current.snow_depth) * 39.37, 1)
                 : null;
 
             const payload = {
@@ -1553,12 +1532,12 @@ Awaiting live data...
                 },
                 current_conditions: {
                     observed_at_iso: current.time || null,
-                    temperature_c: toNumber(current.temperature_2m),
-                    feels_like_c: toNumber(current.apparent_temperature),
-                    snowfall_today_cm: toNumber(daily.snowfall_sum ? daily.snowfall_sum[0] : null),
-                    snow_depth_cm: currentSnowDepthCm,
-                    wind_speed_kmh: toNumber(current.wind_speed_10m, 0),
-                    wind_gust_kmh: toNumber(current.wind_gusts_10m, 0),
+                    temperature_f: toNumber(current.temperature_2m),
+                    feels_like_f: toNumber(current.apparent_temperature),
+                    snowfall_today_in: toNumber(daily.snowfall_sum ? daily.snowfall_sum[0] : null),
+                    snow_depth_in: currentSnowDepthIn,
+                    wind_speed_mph: toNumber(current.wind_speed_10m, 0),
+                    wind_gust_mph: toNumber(current.wind_gusts_10m, 0),
                     weather_code: current.weather_code ?? null
                 },
                 key_levels: {
@@ -1573,7 +1552,8 @@ Awaiting live data...
                 historical_past_7_days: historicalSnow,
                 notes: [
                     'Paste this JSON into ChatGPT and ask for ski-day or trip planning advice.',
-                    'Key arrays: hourly_next_24 (first 24 hours) and upcoming_days (7-day outlook).'
+                    'Key arrays: hourly_next_24 (first 24 hours) and upcoming_days (7-day outlook).',
+                    'All temperatures in °F, wind in mph, snowfall in inches.'
                 ]
             };
 
@@ -1608,7 +1588,7 @@ Awaiting live data...
                     document.body.removeChild(tempTextArea);
                 }
                 if (statusEl) {
-                    statusEl.textContent = 'Copied! Paste the JSON into ChatGPT and ask for a ski plan.';
+                    statusEl.textContent = 'Copied! Paste the JSON into ChatGPT and ask for a Stratton ski plan.';
                 }
             } catch (error) {
                 console.error('Failed to copy chat JSON:', error);
@@ -1644,18 +1624,22 @@ Awaiting live data...
             document.getElementById('current-weather-icon').textContent = weatherDetails.icon;
             document.getElementById('current-weather-summary').textContent = weatherDetails.label;
 
+            // Temperatures already in °F from API
             document.getElementById('current-temp').textContent = formatValue(current.temperature_2m, { suffix: '°' });
             document.getElementById('feels-like').textContent = formatValue(current.apparent_temperature, { suffix: '°' });
 
+            // Snowfall in inches from API
             const snowfallToday = daily && Array.isArray(daily.snowfall_sum) ? daily.snowfall_sum[0] : null;
-            document.getElementById('24h-snow').innerHTML = `${formatValue(snowfallToday)}<span class="text-2xl ml-1">cm</span>`;
+            document.getElementById('24h-snow').innerHTML = `${formatValue(snowfallToday, { decimals: 1 })}<span class="text-2xl ml-1">in</span>`;
 
+            // snow_depth from API is always in meters; convert to inches
             const snowDepthMeters = Number(current.snow_depth);
-            const snowDepthCm = Number.isFinite(snowDepthMeters) ? snowDepthMeters * 100 : null;
-            document.getElementById('snow-base').innerHTML = `${formatValue(snowDepthCm)}<span class="text-2xl ml-1">cm</span>`;
+            const snowDepthIn = Number.isFinite(snowDepthMeters) ? snowDepthMeters * 39.37 : null;
+            document.getElementById('snow-base').innerHTML = `${formatValue(snowDepthIn, { decimals: 0 })}<span class="text-2xl ml-1">in</span>`;
 
-            document.getElementById('wind-speed').innerHTML = `${formatValue(current.wind_speed_10m)}<span class="text-2xl ml-1">km/h</span>`;
-            document.getElementById('wind-gust').innerHTML = `${formatValue(current.wind_gusts_10m)}<span class="text-2xl ml-1">km/h</span>`;
+            // Wind in mph from API
+            document.getElementById('wind-speed').innerHTML = `${formatValue(current.wind_speed_10m)}<span class="text-2xl ml-1">mph</span>`;
+            document.getElementById('wind-gust').innerHTML = `${formatValue(current.wind_gusts_10m)}<span class="text-2xl ml-1">mph</span>`;
 
             const hourIndex = getHourIndex(hourly, current.time);
             const precipNow = hourly && Array.isArray(hourly.precipitation_probability) ? hourly.precipitation_probability[hourIndex] : null;
@@ -1681,7 +1665,8 @@ Awaiting live data...
                 const hourString = time.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true }).replace(' ', '');
 
                 const snowfall = hourly.snowfall[i];
-                const snowfallText = Number.isFinite(snowfall) && snowfall > 0 ? `${snowfall.toFixed(1)} cm` : '--';
+                // snowfall now in inches from API
+                const snowfallText = Number.isFinite(snowfall) && snowfall > 0 ? `${snowfall.toFixed(2)} in` : '--';
                 const precipProbability = hourly.precipitation_probability[i];
                 const precipProbabilityText = formatValue(precipProbability, { suffix: '%', fallback: '--' });
 
@@ -1722,8 +1707,8 @@ Awaiting live data...
 
             const liquidPrecip = hourly.precipitation ? hourly.precipitation[hourIndex] : null;
             document.getElementById('liquid-precip-now').textContent = Number.isFinite(liquidPrecip)
-                ? `${liquidPrecip.toFixed(1)} mm`
-                : '-- mm';
+                ? `${liquidPrecip.toFixed(2)} in`
+                : '-- in';
         }
 
         function updateSunlight(data) {
@@ -1775,7 +1760,8 @@ Awaiting live data...
             const todayGust = getDailyValue(forecastData, 'wind_gusts_10m_max');
             const yesterdayGust = getDailyValue(historicalData, 'wind_gusts_10m_max', -1);
 
-            const snowComparison = buildComparison(todaySnow, yesterdaySnow, { suffix: ' cm' });
+            // Snow in inches
+            const snowComparison = buildComparison(todaySnow, yesterdaySnow, { suffix: ' in', decimals: 2 });
             snowTodayEl.textContent = snowComparison.todayText;
             snowYesterdayEl.textContent = snowComparison.yesterdayText;
             if (snowComparison.deltaText !== '--') {
@@ -1785,6 +1771,7 @@ Awaiting live data...
             }
             applyDeltaStyles(snowDeltaEl, snowComparison.deltaValue);
 
+            // Temp in °F
             const tempComparison = buildComparison(todayHigh, yesterdayHigh, { suffix: '°' });
             tempTodayEl.textContent = tempComparison.todayText;
             tempYesterdayEl.textContent = tempComparison.yesterdayText;
@@ -1795,7 +1782,8 @@ Awaiting live data...
             }
             applyDeltaStyles(tempDeltaEl, tempComparison.deltaValue);
 
-            const gustComparison = buildComparison(todayGust, yesterdayGust, { suffix: ' km/h' });
+            // Wind in mph
+            const gustComparison = buildComparison(todayGust, yesterdayGust, { suffix: ' mph' });
             gustTodayEl.textContent = gustComparison.todayText;
             gustYesterdayEl.textContent = gustComparison.yesterdayText;
             if (gustComparison.deltaText !== '--') {
@@ -1836,16 +1824,16 @@ Awaiting live data...
                             <p class="text-sm text-gray-500">${weatherDetails.label}</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-blue-700 font-semibold">${formatValue(snowfall, { suffix: ' cm', fallback: '--' })}</p>
+                            <p class="text-blue-700 font-semibold">${formatValue(snowfall, { suffix: ' in', fallback: '--', decimals: 2 })}</p>
                             <p class="text-xs text-gray-500">Precip: ${formatValue(precipProb, { suffix: '%', fallback: '--' })}</p>
                         </div>
                     </div>
                     <div class="mt-3 flex items-center justify-between text-sm text-gray-600">
                         <span>High ${formatValue(daily.temperature_2m_max ? daily.temperature_2m_max[i] : null, { suffix: '°' })} / Low ${formatValue(daily.temperature_2m_min ? daily.temperature_2m_min[i] : null, { suffix: '°' })}</span>
-                        <span>Liquid: ${formatValue(precipitation, { suffix: ' mm', fallback: '--', decimals: 1 })}</span>
+                        <span>Liquid: ${formatValue(precipitation, { suffix: ' in', fallback: '--', decimals: 2 })}</span>
                     </div>
                     <div class="mt-2 text-sm text-gray-600">
-                        Gusts up to ${formatValue(windGust, { suffix: ' km/h', fallback: '--' })}, winds peak at ${formatValue(daily.wind_speed_10m_max ? daily.wind_speed_10m_max[i] : null, { suffix: ' km/h', fallback: '--' })}.
+                        Gusts up to ${formatValue(windGust, { suffix: ' mph', fallback: '--' })}, winds peak at ${formatValue(daily.wind_speed_10m_max ? daily.wind_speed_10m_max[i] : null, { suffix: ' mph', fallback: '--' })}.
                     </div>
                 `;
 
